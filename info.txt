@@ -1,0 +1,21 @@
+MVP:
+- Meter ranking por usuario (max 3)
+- empezar a contar partidas 👀 (ver podio?)
+- que pasa si otro usuario se mete
+- si entro a una url de una partida que no existe, redirigir a home.
+- Custom Skins X o O (Tabler icons)
+
+PROD:
+- vercel analytics e insights
+- Ads
+- How to play page
+- Terminos y Condiciones y Privacidad page
+- Status page
+- random oponents
+- historial de partidas
+
+DESPUES:
+- Agregar “revancha”
+- Agregar límite de tiempo por turno
+- Línea que cruza la combinación ganadora
+- mis partidas creadas (jugando o esperando)
