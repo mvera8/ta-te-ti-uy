@@ -11,7 +11,7 @@ import React from "react";
 import { ConvexUserSynchronizer } from "@/components/ConvexUserSynchronizer";
 import Footer from "./Footer";
 
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL || "http://localhost:3000");
 
 function MantineWrapper({ children }: { children: React.ReactNode }) {
     const computedColorScheme = useComputedColorScheme("light");
