@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { Card, Button, Text, Stack, Anchor } from "@mantine/core";
-import { IconBrandGithub, IconBrandFacebook } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import Link from "next/link";
 import { SiteSection } from "@/components/SIteSection";
 
@@ -20,23 +20,34 @@ export default function LoginPage() {
                             fullWidth
                             size="md"
                             radius="xl"
-                            leftSection={<IconBrandGithub size={20} />}
-                            variant="filled"
-                            color="black"
-                            onClick={() => signIn("github", { callbackUrl: "/playroom" })}
+                            leftSection={<IconBrandFacebook size={20} />}
+                            onClick={() => signIn("facebook", { callbackUrl: "/playroom" })}
                         >
-                            Continuar con GitHub
+                            Continuar con Facebook
                         </Button>
 
                         <Button
                             fullWidth
                             size="md"
                             radius="xl"
-                            leftSection={<IconBrandFacebook size={20} />}
-                            color="#1877F2"
-                            onClick={() => signIn("facebook", { callbackUrl: "/playroom" })}
+                            leftSection={<IconBrandGoogle size={20} />}
+                            variant="filled"
+                            color="red"
+                            onClick={() => signIn("google", { callbackUrl: "/playroom" })}
                         >
-                            Continuar con Facebook
+                            Continuar con Google
+                        </Button>
+
+                        <Button
+                            fullWidth
+                            size="md"
+                            radius="xl"
+                            leftSection={<IconBrandGithub size={20} />}
+                            variant="filled"
+                            color="black"
+                            onClick={() => signIn("github", { callbackUrl: "/playroom" })}
+                        >
+                            Continuar con GitHub
                         </Button>
                     </Stack>
 
