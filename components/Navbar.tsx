@@ -38,7 +38,7 @@ export function Navbar() {
     return (
         <header>
             <Container size="lg">
-                <Group justify="space-between" p="md">
+                <Group justify="space-between" py="md" gap={0}>
                     <Group gap="xs">
                         <Logo />
                         {session && (
@@ -48,7 +48,7 @@ export function Navbar() {
                         )}
                     </Group>
 
-                    <Group gap={5}>
+                    <Group gap={1}>
                         {!session ? (
                             <>
                                 <Demo />
@@ -72,6 +72,7 @@ export function Navbar() {
                                     <Button
                                         variant="default"
                                         size="sm"
+                                        px="xs"
                                     >
                                         <Text size="xs">{session.user?.name}</Text>
                                         <Avatar src={session.user?.image} radius="xl" size="sm" ms="xs" />
@@ -97,8 +98,6 @@ export function Navbar() {
                             </>
                         )}
                     </Group>
-
-
                 </Group>
             </Container>
 

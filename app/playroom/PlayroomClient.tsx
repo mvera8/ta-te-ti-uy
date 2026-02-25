@@ -8,6 +8,8 @@ import CardNumber from "@/components/CardNumber";
 import { IconBolt, IconCircleArrowUpFilled } from "@tabler/icons-react";
 import { Ranking } from "@/components/Ranking";
 import Ads from "@/components/Ads";
+import { useMediaQuery } from "@mantine/hooks";
+import { SiteSection } from "@/components/SIteSection";
 
 function generateRoomCode() {
     return Math.random().toString(36).substring(2, 7).toUpperCase();
@@ -22,10 +24,8 @@ export default function PlayroomClient({
         image?: string | null;
     };
 }) {
+    const isDesktop = useMediaQuery('(min-width: 64em)');
     const router = useRouter();
-    const userStats = useQuery(api.users.getUserStats, {
-        tokenIdentifier: user.email ?? "",
-    });
     const unfinishedGames = useQuery(api.games.getUnfinishedGames, {
         userId: user.email ?? "",
     });
@@ -55,10 +55,8 @@ export default function PlayroomClient({
         router.push(`/game/${roomCode}`);
     };
 
-    const stats = userStats || { wins: 0, losses: 0, draws: 0, totalGames: 0 };
-
     return (
-        <Container py="xl">
+        <SiteSection size="md">
             <Ads />
             <Group justify="space-between" mb="md">
                 <Text size="xl">
@@ -71,7 +69,8 @@ export default function PlayroomClient({
                     radius="xl"
                     variant="filled"
                     color="grape"
-                    size="md"
+                    size={isDesktop ? "md" : "lg"}
+                    fullWidth={!isDesktop}
                 >
                     Crear Nueva Partida
                 </Button>
@@ -90,7 +89,7 @@ export default function PlayroomClient({
                     <CardNumber number={total} title="Partidas Totales" />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 4 }}>
-                    {lastGame ? (
+                    {lastGame &&
                         <Card withBorder p="lg" radius="md" shadow="sm">
                             <Group justify="space-between" mb="md">
                                 <Title order={3} size="h2" tt="uppercase">
@@ -104,11 +103,7 @@ export default function PlayroomClient({
                                 Último Partido vs {lastGame.playerOName}
                             </Text>
                         </Card>
-                    ) : (
-                        <Title order={3} size="h2" tt="uppercase">
-                            Juega tu primera partida!
-                        </Title>
-                    )}
+                    }
                 </Grid.Col>
             </Grid>
 
@@ -142,7 +137,9 @@ export default function PlayroomClient({
                             radius="xl"
                             variant="light"
                             color="cyan"
-                            onClick={() => router.push("/ranking")}>
+                            onClick={() => router.push("/ranking")}
+                            mb={{ base: "md", md: "xs" }}
+                        >
                             Ver Ranking
                         </Button>
                     </Group>
@@ -182,6 +179,6 @@ export default function PlayroomClient({
                     </Card>
                 </Grid.Col>
             </Grid>
-        </Container>
+        </SiteSection>
     );
 }

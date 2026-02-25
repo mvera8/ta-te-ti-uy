@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Card, Container, Title, SimpleGrid } from "@mantine/core";
+import { Card, Title, SimpleGrid } from "@mantine/core";
 import { useQuery, useConvexConnectionState } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import StatusBadge from "@/components/StatusBadge";
 import { useNetwork } from "@mantine/hooks";
+import { SiteSection } from "@/components/SIteSection";
 
 type Status = "loading" | "online" | "offline";
 
@@ -41,37 +42,33 @@ export default function StatusPage() {
     const authStatus = useHttpPing("/api/auth/providers");
 
     return (
-        <section>
-            <Container py="xl">
-                <Title order={1} mb="lg">Status</Title>
+        <SiteSection title="Status">
+            <SimpleGrid cols={{ base: 1, md: 2 }}>
+                <Card withBorder>
+                    <Title order={2} mb="xs">Tu Conexión</Title>
+                    <StatusBadge status={networkStatus.online ? "online" : "offline"} />
+                </Card>
 
-                <SimpleGrid cols={2}>
-                    <Card withBorder>
-                        <Title order={2} mb="xs">Tu Conexión</Title>
-                        <StatusBadge status={networkStatus.online ? "online" : "offline"} />
-                    </Card>
+                <Card withBorder>
+                    <Title order={2} mb="xs">Servidor</Title>
+                    <StatusBadge status={serverStatus} />
+                </Card>
 
-                    <Card withBorder>
-                        <Title order={2} mb="xs">Servidor</Title>
-                        <StatusBadge status={serverStatus} />
-                    </Card>
+                <Card withBorder>
+                    <Title order={2} mb="xs">Base de Datos</Title>
+                    <ConvexStatus />
+                </Card>
 
-                    <Card withBorder>
-                        <Title order={2} mb="xs">Base de Datos</Title>
-                        <ConvexStatus />
-                    </Card>
+                <Card withBorder>
+                    <Title order={2} mb="xs">Realtime (WebSocket)</Title>
+                    <ConvexRealtimeStatus />
+                </Card>
 
-                    <Card withBorder>
-                        <Title order={2} mb="xs">Realtime (WebSocket)</Title>
-                        <ConvexRealtimeStatus />
-                    </Card>
-
-                    <Card withBorder>
-                        <Title order={2} mb="xs">Auth</Title>
-                        <StatusBadge status={authStatus} />
-                    </Card>
-                </SimpleGrid>
-            </Container>
-        </section>
+                <Card withBorder>
+                    <Title order={2} mb="xs">Auth</Title>
+                    <StatusBadge status={authStatus} />
+                </Card>
+            </SimpleGrid>
+        </SiteSection>
     );
 }

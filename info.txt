@@ -4,16 +4,13 @@ MVP:
 - solo uruguay
 - favicon
 - mobile
-- facebook
--- Icono de la aplicación (1024 x 1024)
 -- share en twitter & share en instagram
 
 PROD:
 - Ads
 - How to play page
 - Terminos y Condiciones y Privacidad page
-- Status page
-- random oponents
+- made by
 
 
 QUIZA:
@@ -29,3 +26,4 @@ DESPUES:
 - mis partidas creadas (jugando o esperando)
 - Agregar Grupo
 - Agregar Torneo
+- random oponents

@@ -2,12 +2,14 @@
 
 import ExampleBoard from "@/components/ExampleBoard";
 import SiteBadge from "@/components/SiteBadge";
-import { Container, Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification, Group } from "@mantine/core"
-import { IconBrain, IconCheck, IconChevronRight, IconInfoSmall, IconMedal2, IconRocket, IconShare3, IconWorld } from "@tabler/icons-react";
+import { Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification, Group } from "@mantine/core"
+import { IconBrain, IconChevronRight, IconMedal2, IconRocket, IconShare3, IconWorld } from "@tabler/icons-react";
 import Link from "next/link"
-import { useWindowScroll } from "@mantine/hooks";
+import { useWindowScroll, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import classes from './Homepage.module.css';
+import { SiteSection } from "@/components/SIteSection";
 
 const cards = [
   {
@@ -32,8 +34,13 @@ const cards = [
 
 export default function Home() {
   const [scroll] = useWindowScroll();
+  const isDesktop = useMediaQuery('(min-width: 64em)');
   const [mounted, setMounted] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const shouldMountHero = isDesktop
+    ? mounted && scroll.y === 0
+    : true;
 
   useEffect(() => {
     setMounted(true);
@@ -55,12 +62,12 @@ export default function Home() {
         }}
         py="xl"
       >
-        <Container size="lg" py="xl">
+        <SiteSection>
           <Grid>
             <Grid.Col span={{ base: 12, md: 7 }}>
               <SiteBadge text="#Ta-Te-Ti-Uy" />
 
-              <Title mb="lg" fw={900} style={{ fontSize: "5rem", lineHeight: 1.1 }}>
+              <Title mb="lg" fw={900} className={classes.title}>
                 El Ta-Te-Ti más {' '}
                 <Text
                   component="div"
@@ -73,7 +80,7 @@ export default function Home() {
                 del Uruguay
               </Title>
 
-              <Text size="lg" mb="lg" c="gray.7">
+              <Text size="lg" mb="lg" c="dimmed">
                 Juega al <Text span fw="bold">Ta-Te-Ti online</Text> con amigos. Compite con los mejores, sube en las clasificaciones y demuestra que eres el mejor.
               </Text>
 
@@ -83,88 +90,92 @@ export default function Home() {
                 align="flex-start"
                 direction="row"
                 wrap="wrap"
+                mb="xl"
+                w="100%"
               >
 
-                <Link href="/login">
-                  <Button
-                    radius="xl"
-                    variant="filled"
-                    color="grape"
-                    size="xl"
-                    leftSection={<IconRocket size={25} />}
-                  >
-                    Jugar Ahora
-                  </Button>
-                </Link>
-                <Link href="/como-jugar">
-                  <Button
-                    radius="xl"
-                    variant="default"
-                    size="xl"
-                    rightSection={<IconChevronRight size={25} />}
-                  >
-                    Cómo Jugar?
-                  </Button>
-                </Link>
+                <Button
+                  component="a"
+                  href="/login"
+                  radius="xl"
+                  variant="filled"
+                  color="grape"
+                  size="xl"
+                  leftSection={<IconRocket size={25} />}
+                  fullWidth={!isDesktop}
+                >
+                  Jugar Ahora
+                </Button>
+                <Button
+                  component="a"
+                  href="/como-jugar"
+                  radius="xl"
+                  variant="default"
+                  size="xl"
+                  rightSection={<IconChevronRight size={25} />}
+                  fullWidth={!isDesktop}
+                >
+                  Cómo Jugar?
+                </Button>
               </Flex>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 5 }}>
-
               <Center h="100%">
-                <Transition transition="slide-left" mounted={mounted && scroll.y === 0} duration={600} timingFunction="ease">
+                <Transition
+                  transition="slide-left"
+                  mounted={shouldMountHero}
+                  duration={isDesktop ? 600 : 0}
+                  timingFunction="ease"
+                >
                   {(transitionStyles) => (
-                    <Box style={transitionStyles}>
-                      <Transition mounted={showNotifications} transition="pop" duration={500}>
-                        {(styles) => (
-                          <Notification
-                            icon={<IconShare3 size={20} />}
-                            color="green"
-                            title="¡Hora del duelo!"
-                            withCloseButton={false}
-                            radius="xl"
-                            style={{
-                              ...styles,
-                              position: "absolute",
-                              top: -60,
-                              left: -80,
-                              zIndex: 1,
-                            }}
-                          >
-                            Reta a tus amigos
-                          </Notification>
-                        )}
-                      </Transition>
+                    <Box className={classes.animatedBox} style={transitionStyles}>
 
-                      <Transition mounted={showNotifications} transition="pop" duration={500}>
-                        {(styles) => (
-                          <Notification
-                            icon={<IconBrain size={20} />}
-                            color="grape"
-                            title="Hora de jugar!"
-                            withCloseButton={false}
-                            radius="xl"
-                            style={{
-                              ...styles,
-                              position: "absolute",
-                              bottom: -40,
-                              right: -80,
-                              zIndex: 1,
-                            }}
-                          >
-                            Piensa tu estrategia
-                          </Notification>
-                        )}
-                      </Transition>
+                      {isDesktop && <>
+
+                        <Transition mounted={showNotifications} transition="pop" duration={500}>
+                          {(styles) => (
+                            <Notification
+                              icon={<IconShare3 size={20} />}
+                              color="green"
+                              title="¡Hora del duelo!"
+                              withCloseButton={false}
+                              radius="xl"
+                              className={classes.animatedNotification1}
+                              style={{
+                                ...styles,
+                              }}
+                            >
+                              Reta a tus amigos
+                            </Notification>
+                          )}
+                        </Transition>
+
+                        <Transition mounted={showNotifications} transition="pop" duration={500}>
+                          {(styles) => (
+                            <Notification
+                              icon={<IconBrain size={20} />}
+                              color="grape"
+                              title="Hora de jugar!"
+                              withCloseButton={false}
+                              radius="xl"
+                              className={classes.animatedNotification2}
+                              style={{
+                                ...styles,
+                                position: "absolute",
+                                bottom: -40,
+                                right: -80,
+                                zIndex: 1,
+                              }}
+                            >
+                              Piensa tu estrategia
+                            </Notification>
+                          )}
+                        </Transition>
+                      </>
+                      }
 
                       <ExampleBoard
-                        style={{
-                          // gira y agranda
-                          transform: "rotate(5deg) scale(1.2)",
-                          transformOrigin: "center",
-                          transformStyle: "preserve-3d",
-                          width: "100%",
-                          height: "100%",
-                        }}
+                        className={classes.animatedBoard}
                       />
                     </Box>
                   )}
@@ -173,124 +184,116 @@ export default function Home() {
               </Center>
             </Grid.Col>
           </Grid>
-        </Container>
+        </SiteSection>
       </Box>
 
-      <section>
-        <Container size="lg" py="xl">
-          <Title order={2} size="h1" ta="center" mb="xl">
-            Dominá el juego
-          </Title>
-          <SimpleGrid cols={{ base: 1, md: 2 }}>
-            {cards.map((card, index) => (
-              <Card key={index} p="xl" radius="md" bg="none">
-                <ThemeIcon variant="light" size="xl" color={card.color} mb="md">
-                  {card.icon}
-                </ThemeIcon>
-                <Title order={3} size="h2">
-                  {card.title}
+      <SiteSection>
+        <Title order={2} size="h1" ta="center" mb="xl">Dominá el juego</Title>
+        <SimpleGrid cols={{ base: 1, md: 2 }}>
+          {cards.map((card, index) => (
+            <Card key={index} p="md" radius="md" bg="none">
+              <ThemeIcon variant="light" size="xl" color={card.color} mb="md">
+                {card.icon}
+              </ThemeIcon>
+              <Title order={3} size="h2">
+                {card.title}
+              </Title>
+              <Text>{card.description}</Text>
+            </Card>
+          ))}
+        </SimpleGrid>
+      </SiteSection>
+
+      <SiteSection>
+        <SimpleGrid cols={{ base: 1, md: 3 }}>
+          <Transition transition="slide-right" mounted={mounted && scroll.y > 100} duration={isDesktop ? 600 : 0} timingFunction="ease">
+            {(transitionStyles) => (
+              <Card
+                radius="md"
+                p="lg"
+                withBorder style={transitionStyles}>
+                <Title order={5} mb="md">
+                  Tablero de juego
                 </Title>
-                <Text>{card.description}</Text>
+                <ExampleBoard />
               </Card>
-            ))}
-          </SimpleGrid>
-        </Container>
-      </section>
+            )}
+          </Transition>
 
-      <section>
-        <Container size="lg" py="xl">
-          <Group justify="flex-end" align="end" grow>
-            <Transition transition="slide-right" mounted={mounted && scroll.y > 100} duration={600} timingFunction="ease">
-              {(transitionStyles) => (
-                <Box style={transitionStyles}>
-                  <ExampleBoard />
-                </Box>
-              )}
-            </Transition>
-
-            <Card
-              radius="md"
-              p="lg"
-              withBorder
-              style={{
-                height: "100%",
-              }}
-            >
-              <Center>
-                <Avatar.Group py="xl">
-                  <Avatar src="image.webp" size="xl" />
-                  <Avatar src="image.webp" size="xl" />
-                  <Avatar size="xl" variant="light" color="grape">+99</Avatar>
-                </Avatar.Group>
-              </Center>
-              <Title order={5}>
-                Únete a la comunidad y demostrá que sos el mejor jugador!
-              </Title>
-            </Card>
-
-            <Card
-              radius="md"
-              p="lg"
-              withBorder
-              style={{
-                background: `
-                      radial-gradient(ellipse 110% 70% at 25% 80%, rgba(255, 20, 147, 0.15), transparent 55%),
-                      radial-gradient(ellipse 80% 90% at 20% 30%, rgba(138, 43, 226, 0.18), transparent 50%),
-                      transparent
-                  `,
-                borderColor: "rgba(255, 20, 147, 0.15)"
-              }}
-            >
-              <Center>
-                <Image
-                  src="/trophy.webp"
-                  alt="The
-                    Best"
-                  width={230} height={230}
-                />
-
-              </Center>
-              <Title order={5}>
-                Coronate como el mejor jugador de Ta-Te-Ti del Uruguay.
-              </Title>
-            </Card>
-
-          </Group>
-
-        </Container>
-      </section>
-
-      <section>
-        <Container size="lg" py="xl">
           <Card
-            withBorder
-            p="xl"
             radius="md"
-            shadow="sm"
-            bg="var(--mantine-color-grape-5)"
+            p="lg"
+            withBorder
           >
-            <Title order={2} size="h1" ta="center" mb="xs" c="white" tt="uppercase">
-              Master the Ultimate Grid.
+            <Title order={5} mb="xl">
+              Únete a la comunidad y demostrá que sos el mejor jugador!
             </Title>
-            <Text size="lg" ta="center" mb="xl" c="white">
-              Create your account in seconds and claim your unique username before someone else does.
-            </Text>
             <Center>
-              <Link href="/login">
-                <Button
-                  radius="xl"
-                  variant="white"
-                  color="grape"
-                  size="xl"
-                  leftSection={<IconRocket size={25} />}
-                >
-                  Jugar Ahora
-                </Button>
-              </Link>
+              <Avatar.Group>
+                <Avatar src="image.webp" size="xl" />
+                <Avatar src="image.webp" size="xl" />
+                <Avatar size="xl" variant="light" color="grape">+99</Avatar>
+              </Avatar.Group>
             </Center>
           </Card>
-        </Container>
-      </section>
+
+          <Card
+            radius="md"
+            p="lg"
+            withBorder
+            style={{
+              background: `
+                    radial-gradient(ellipse 110% 70% at 25% 80%, rgba(255, 20, 147, 0.15), transparent 55%),
+                    radial-gradient(ellipse 80% 90% at 20% 30%, rgba(138, 43, 226, 0.18), transparent 50%),
+                    transparent
+                `,
+              borderColor: "rgba(255, 20, 147, 0.15)"
+            }}
+          >
+            <Title order={5} mb="xl">
+              Coronate como el mejor jugador de Ta-Te-Ti del Uruguay.
+            </Title>
+            <Center>
+              <Image
+                src="/trophy.webp"
+                alt="The Best"
+                width={230}
+                height={230}
+              />
+            </Center>
+          </Card>
+        </SimpleGrid>
+      </SiteSection>
+
+      <SiteSection>
+        <Card
+          withBorder
+          p="xl"
+          radius="md"
+          shadow="sm"
+          bg="var(--mantine-color-grape-5)"
+        >
+          <Title order={2} size="h1" ta="center" mb="xs" c="white" tt="uppercase">
+            Master the Ultimate Grid.
+          </Title>
+          <Text size="lg" ta="center" mb="xl" c="white">
+            Create your account in seconds and claim your unique username before someone else does.
+          </Text>
+          <Center>
+            <Link href="/login">
+              <Button
+                radius="xl"
+                variant="white"
+                color="grape"
+                size="xl"
+                leftSection={<IconRocket size={25} />}
+              >
+                Jugar Ahora
+              </Button>
+            </Link>
+          </Center>
+        </Card>
+      </SiteSection>
     </>
   )
 }

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import CardNumber from "@/components/CardNumber";
+import { SiteSection } from "@/components/SIteSection";
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -42,7 +43,7 @@ export default function ProfilePage() {
     const stats = userStats || { wins: 0, losses: 0, draws: 0, totalGames: 0 };
 
     return (
-        <Container size="sm" mt="xl">
+        <SiteSection size="sm">
             <Card
                 radius="md"
                 p="lg"
@@ -70,6 +71,6 @@ export default function ProfilePage() {
                 <CardNumber number={stats.draws} title="Empates" />
                 <CardNumber number={stats.totalGames} title="Total Jugadas" />
             </SimpleGrid>
-        </Container>
+        </SiteSection>
     );
 }

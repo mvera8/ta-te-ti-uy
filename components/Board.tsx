@@ -42,7 +42,7 @@ export default function Board({
     }
 
     return (
-        <Stack>
+        <Stack gap="xs">
             {turnTime && (
                 <Center>
                     <SiteBadge text={statusText} />
@@ -50,7 +50,11 @@ export default function Board({
             )}
 
 
-            <Card radius="md" p="md" withBorder>
+            <Card
+                radius="md"
+                p="md"
+                withBorder
+            >
                 <Stack align="center" gap="xs">
                     {[0, 3, 6].map((rowStart) => (
                         <Group key={rowStart}>

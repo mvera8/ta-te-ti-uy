@@ -1,13 +1,9 @@
-import { Container, Title } from "@mantine/core";
+import { SiteSection } from "@/components/SIteSection";
 
 export default function PrivacyPage() {
     return (
-        <section>
-            <Container py="xl">
-                <Title order={1}>
-                    Política de Privacidad
-                </Title>
-            </Container>
-        </section>
+        <SiteSection title="Política de Privacidad">
+            a
+        </SiteSection>
     )
 }
