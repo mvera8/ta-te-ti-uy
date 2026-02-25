@@ -5,7 +5,8 @@ const links = [
     { label: "Terminos", href: "/terms" },
     { label: "Privacidad", href: "/privacy" },
     { label: "Como jugar", href: "/como-jugar" },
-]
+    { label: "Status", href: "/status" },
+];
 
 export default function Footer() {
     return (
