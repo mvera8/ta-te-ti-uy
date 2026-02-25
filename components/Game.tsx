@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-    Container,
     Loader,
     Text,
     Button,
@@ -25,6 +24,7 @@ import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import ConfettiExplosion from "react-confetti-explosion";
 import Link from "next/link";
+import { SiteSection } from "./SIteSection";
 
 export default function Game({ roomCode }: { roomCode: string }) {
     const router = useRouter();
@@ -188,7 +188,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
     ============================== */
 
     return (
-        <Container size="lg" py="xl" style={{ position: "relative" }}>
+        <SiteSection size="md">
             {isExploding && (
                 <Box
                     style={{
@@ -368,6 +368,6 @@ export default function Game({ roomCode }: { roomCode: string }) {
                     </Stack>
                 </Stack>
             </Modal>
-        </Container>
+        </SiteSection>
     );
 }

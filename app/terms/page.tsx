@@ -1,13 +1,9 @@
-import { Container, Title } from "@mantine/core";
+import { SiteSection } from "@/components/SIteSection";
 
 export default function TermsPage() {
     return (
-        <section>
-            <Container py="xl">
-                <Title order={1}>
-                    Términos & Condiciones
-                </Title>
-            </Container>
-        </section>
+        <SiteSection title="Términos & Condiciones">
+            <p>a</p>
+        </SiteSection>
     )
 }

@@ -19,7 +19,7 @@ export function Ranking({ limit = 1000 }: RankingProps) {
     </Card>;
 
     return (
-        <Card withBorder p="xl" radius="md" shadow="sm" mb="md">
+        <Card withBorder p={{ base: "md", md: "lg" }} radius="md" shadow="sm" mb="md">
             <Table highlightOnHover verticalSpacing="sm">
                 <Table.Thead>
                     <Table.Tr>
@@ -36,11 +36,12 @@ export function Ranking({ limit = 1000 }: RankingProps) {
                         <Table.Tr key={user._id}>
                             <Table.Td>
                                 <ThemeIcon
+                                    size="md"
                                     radius="xl"
                                     variant="light"
                                     color={index === 0 ? "yellow" : index === 1 ? "gray" : index === 2 ? "brown" : "blue"}
                                 >
-                                    <IconRosetteFilled style={{ width: '70%', height: '70%' }} />
+                                    <IconRosetteFilled size={16} />
                                 </ThemeIcon>
                             </Table.Td>
                             <Table.Td>
