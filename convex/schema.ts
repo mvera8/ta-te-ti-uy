@@ -12,8 +12,6 @@ export default defineSchema({
         losses: v.number(),
         draws: v.number(),
         totalGames: v.number(),
-        dailyChallengeProgress: v.optional(v.number()),
-        lastChallengeUpdate: v.optional(v.number()),
     })
         .index("by_token", ["tokenIdentifier"])
         .index("by_wins", ["wins"]),

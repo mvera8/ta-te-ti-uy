@@ -9,6 +9,7 @@ export default function Board({
     winner,
     onPlay,
     isMyTurn,
+    turnTime = true,
 }: {
     board: ("X" | "O" | null)[];
     currentTurn: "X" | "O";
@@ -16,6 +17,7 @@ export default function Board({
     winner?: "X" | "O" | "draw";
     onPlay: (position: number) => void;
     isMyTurn: boolean;
+    turnTime?: boolean;
 }) {
     function handleClick(i: number) {
         if (!isMyTurn) return;
@@ -41,9 +43,12 @@ export default function Board({
 
     return (
         <Stack>
-            <Center>
-                <SiteBadge text={statusText} />
-            </Center>
+            {turnTime && (
+                <Center>
+                    <SiteBadge text={statusText} />
+                </Center>
+            )}
+
 
             <Card radius="md" p="md" withBorder>
                 <Stack align="center" gap="xs">

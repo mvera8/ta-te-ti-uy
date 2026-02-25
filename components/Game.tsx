@@ -12,6 +12,7 @@ import {
     Stack,
     Box,
     Grid,
+    Modal,
 } from "@mantine/core";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -20,9 +21,10 @@ import Board from "./Board";
 import Ads from "./Ads";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { sileo } from "sileo";
-import { useDocumentTitle } from "@mantine/hooks";
+import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import ConfettiExplosion from "react-confetti-explosion";
+import Link from "next/link";
 
 export default function Game({ roomCode }: { roomCode: string }) {
     const router = useRouter();
@@ -30,6 +32,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
     const userId = session?.user?.email;
 
     const [isExploding, setIsExploding] = useState(false);
+    const [gameOverOpened, { open: openGameOver, close: closeGameOver }] = useDisclosure(false);
 
     const game = useQuery(
         api.games.getGameByRoom,
@@ -109,6 +112,12 @@ export default function Game({ roomCode }: { roomCode: string }) {
             if (isWinner) setIsExploding(true);
         }
     }, [game?.status, game?.winner]);
+
+    useEffect(() => {
+        if (game?.status === "finished") {
+            openGameOver();
+        }
+    }, [game?.status]);
 
     const mySymbol =
         game?.playerX === userId
@@ -318,6 +327,47 @@ export default function Game({ roomCode }: { roomCode: string }) {
                     </Card>
                 </Grid.Col>
             </Grid>
+
+            <Modal
+                opened={gameOverOpened}
+                onClose={closeGameOver}
+                title="Partida Finalizada"
+                centered
+            >
+                <Stack align="center" py="xl">
+                    <Stack gap="sm">
+                        <Text size="xl" fw={700}>
+                            {game.winner === "draw"
+                                ? "¡Es un empate! 🤝"
+                                : game.winner === mySymbol
+                                    ? "¡Felicitaciones! Ganaste 🎉"
+                                    : "¡Mucha suerte la próxima! 🏁"}
+                        </Text>
+                        <Link href="/playroom" style={{ textDecoration: "none" }}>
+                            <Button
+                                fullWidth
+                                size="md"
+                                radius="xl"
+                                variant="filled"
+                                color="cyan"
+                            >
+                                Volver al Playroom
+                            </Button>
+                        </Link>
+                        <Button
+                            fullWidth
+                            size="md"
+                            radius="xl"
+                            variant="light"
+                            color="grape"
+                            onClick={closeGameOver}
+                        >
+                            Cerrar
+                        </Button>
+
+                    </Stack>
+                </Stack>
+            </Modal>
         </Container>
     );
 }

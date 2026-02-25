@@ -1,9 +1,8 @@
 MVP:
 - Meter ranking por usuario (max 3)
-- empezar a contar partidas 👀 (ver podio?)
 - que pasa si otro usuario se mete
 - si entro a una url de una partida que no existe, redirigir a home.
-- Custom Skins X o O (Tabler icons)
+- solo uruguay
 
 PROD:
 - vercel analytics e insights
@@ -12,10 +11,18 @@ PROD:
 - Terminos y Condiciones y Privacidad page
 - Status page
 - random oponents
-- historial de partidas
+
+
+QUIZA:
+- get a cofee? (donaciones)
+-- https://ko-fi.com/
 
 DESPUES:
+- Custom Skins X o O (Tabler icons)
+- historial de partidas
 - Agregar “revancha”
 - Agregar límite de tiempo por turno
 - Línea que cruza la combinación ganadora
 - mis partidas creadas (jugando o esperando)
+- Agregar Grupo
+- Agregar Torneo

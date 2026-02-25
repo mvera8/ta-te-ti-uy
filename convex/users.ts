@@ -40,13 +40,13 @@ export const storeUser = mutation({
 });
 
 export const getRanking = query({
-    args: {},
-    handler: async (ctx) => {
+    args: { limit: v.optional(v.number()) },
+    handler: async (ctx, args) => {
         return await ctx.db
             .query("users")
             .withIndex("by_wins")
             .order("desc")
-            .take(10);
+            .take(args.limit ?? 10);
     },
 });
 

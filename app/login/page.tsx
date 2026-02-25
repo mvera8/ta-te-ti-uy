@@ -17,8 +17,6 @@ export default function LoginPage() {
                 </Stack>
                 <Card withBorder p="xl" radius="md" shadow="sm" mb="md">
                     <Stack gap="xl" align="center">
-
-
                         <Stack gap="sm">
                             <Button
                                 fullWidth
