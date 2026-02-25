@@ -1,6 +1,6 @@
 import { ActionIcon, Avatar, Button, Container, Group, Text, Burger, Drawer, Stack, Divider } from "@mantine/core"
 import { useSession, signOut } from "next-auth/react"
-import { useDisclosure } from "@mantine/hooks"
+import { useDisclosure, useMediaQuery } from "@mantine/hooks"
 import Demo from "./Demo"
 import Link from "next/link"
 import { IconLogout } from "@tabler/icons-react"
@@ -13,6 +13,7 @@ const links = [
 ]
 
 export function Navbar() {
+    const isDesktop = useMediaQuery('(min-width: 64em)');
     const { data: session } = useSession();
     const [opened, { toggle, close }] = useDisclosure(false);
 
@@ -74,8 +75,8 @@ export function Navbar() {
                                         size="sm"
                                         px="xs"
                                     >
-                                        <Text size="xs">{session.user?.name}</Text>
-                                        <Avatar src={session.user?.image} radius="xl" size="sm" ms="xs" />
+                                        {isDesktop && <Text size="xs">{session.user?.name}</Text>}
+                                        <Avatar src={session.user?.image} radius="xl" size="sm" ms={isDesktop ? "xs" : 0} />
                                     </Button>
                                 </Link>
 

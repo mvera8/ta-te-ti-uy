@@ -129,7 +129,23 @@ export default function PlayroomClient({
                 gutter="xs"
                 mb="md"
             >
-                <Grid.Col span={{ base: 12, md: 5 }}>
+                <Grid.Col span={{ base: 12, md: 7 }} order={isDesktop ? 1 : 2}>
+                    <Group justify="space-between">
+                        <Title order={3} size="h4" mb="sm">Ranking Global</Title>
+                        <Button
+                            radius="xl"
+                            variant="light"
+                            color="cyan"
+                            onClick={() => router.push("/ranking")}
+                            mb={{ base: "md", md: "xs" }}
+                        >
+                            Ver Ranking
+                        </Button>
+                    </Group>
+
+                    <Ranking limit={3} />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 5 }} order={isDesktop ? 2 : 1}>
                     <Card
                         withBorder
                         p="lg"
@@ -162,21 +178,6 @@ export default function PlayroomClient({
                             </Text>
                         </Group>
                     </Card>
-                </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 7 }}>
-                    <Title order={3} size="h4" mb="sm">Ranking Global</Title>
-                    <Ranking limit={3} />
-                    <Group justify="flex-end">
-                        <Button
-                            radius="xl"
-                            variant="light"
-                            color="cyan"
-                            onClick={() => router.push("/ranking")}
-                            mb={{ base: "md", md: "xs" }}
-                        >
-                            Ver Ranking
-                        </Button>
-                    </Group>
                 </Grid.Col>
             </Grid>
         </SiteSection>
