@@ -2,6 +2,7 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript } from "@mantine/core";
 import { Providers } from "@/components/Providers";
 import React from "react";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata = {
   title: "TaTeTiUy",
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

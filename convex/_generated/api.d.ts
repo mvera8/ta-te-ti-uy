@@ -10,6 +10,7 @@
 
 import type * as calculateWinner from "../calculateWinner.js";
 import type * as games from "../games.js";
+import type * as health from "../health.js";
 import type * as users from "../users.js";
 
 import type {
@@ -21,6 +22,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   calculateWinner: typeof calculateWinner;
   games: typeof games;
+  health: typeof health;
   users: typeof users;
 }>;
 

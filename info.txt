@@ -1,11 +1,14 @@
 MVP:
-- Meter ranking por usuario (max 3)
 - que pasa si otro usuario se mete
 - si entro a una url de una partida que no existe, redirigir a home.
 - solo uruguay
+- favicon
+- mobile
+- facebook
+-- Icono de la aplicación (1024 x 1024)
+-- share en twitter & share en instagram
 
 PROD:
-- vercel analytics e insights
 - Ads
 - How to play page
 - Terminos y Condiciones y Privacidad page
@@ -16,12 +19,12 @@ PROD:
 QUIZA:
 - get a cofee? (donaciones)
 -- https://ko-fi.com/
+- Agregar límite de tiempo por turno (https://mantine.dev/hooks/use-interval/)
 
 DESPUES:
 - Custom Skins X o O (Tabler icons)
 - historial de partidas
 - Agregar “revancha”
-- Agregar límite de tiempo por turno
 - Línea que cruza la combinación ganadora
 - mis partidas creadas (jugando o esperando)
 - Agregar Grupo
