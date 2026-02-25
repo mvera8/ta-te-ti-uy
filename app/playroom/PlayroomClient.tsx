@@ -7,9 +7,9 @@ import { api } from "@/convex/_generated/api";
 import CardNumber from "@/components/CardNumber";
 import { IconBolt } from "@tabler/icons-react";
 import { Ranking } from "@/components/Ranking";
-import Ads from "@/components/Ads";
 import { useMediaQuery } from "@mantine/hooks";
 import { SiteSection } from "@/components/SiteSection";
+import Ads from "@/components/Ads";
 
 function generateRoomCode() {
     return Math.random().toString(36).substring(2, 7).toUpperCase();
@@ -123,27 +123,12 @@ export default function PlayroomClient({
                 </Box>
             )}
 
-            <Title order={3} size="h4" mb="sm">Ranking Global</Title>
             <Grid
                 align="flex-start"
                 justify="center"
                 gutter="xs"
                 mb="md"
             >
-                <Grid.Col span={{ base: 12, md: 7 }}>
-                    <Ranking limit={3} />
-                    <Group justify="flex-end">
-                        <Button
-                            radius="xl"
-                            variant="light"
-                            color="cyan"
-                            onClick={() => router.push("/ranking")}
-                            mb={{ base: "md", md: "xs" }}
-                        >
-                            Ver Ranking
-                        </Button>
-                    </Group>
-                </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 5 }}>
                     <Card
                         withBorder
@@ -177,6 +162,21 @@ export default function PlayroomClient({
                             </Text>
                         </Group>
                     </Card>
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 7 }}>
+                    <Title order={3} size="h4" mb="sm">Ranking Global</Title>
+                    <Ranking limit={3} />
+                    <Group justify="flex-end">
+                        <Button
+                            radius="xl"
+                            variant="light"
+                            color="cyan"
+                            onClick={() => router.push("/ranking")}
+                            mb={{ base: "md", md: "xs" }}
+                        >
+                            Ver Ranking
+                        </Button>
+                    </Group>
                 </Grid.Col>
             </Grid>
         </SiteSection>

@@ -22,23 +22,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code",
+                },
+            },
         }),
     ],
     secret: process.env.AUTH_SECRET,
-
-    callbacks: {
-        authorized({ request, auth }) {
-            const { pathname } = request.nextUrl
-
-            // Rutas protegidas
-            if (
-                pathname.startsWith("/playroom") ||
-                pathname.startsWith("/game")
-            ) {
-                return !!auth
-            }
-
-            return true
-        },
-    },
 })
