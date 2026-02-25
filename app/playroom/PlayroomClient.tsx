@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Container, Title, Text, Avatar, Stack, Card, SimpleGrid, Group, Grid, Progress, Badge, Center, Box } from "@mantine/core";
+import { Button, Container, Title, Text, Avatar, Stack, Card, SimpleGrid, Group, Grid, Progress, Badge, Center, Box, ThemeIcon } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import CardNumber from "@/components/CardNumber";
-import { IconBolt } from "@tabler/icons-react";
+import { IconBolt, IconCircleArrowUpFilled } from "@tabler/icons-react";
 import { Ranking } from "@/components/Ranking";
 import Ads from "@/components/Ads";
 
@@ -38,6 +38,9 @@ export default function PlayroomClient({
     const lastGame = useQuery(api.games.getLastGame, {
         userId: user.email ?? "",
     });
+    const dailyMatches = useQuery(api.games.getDailyMatchesCount, {
+        userId: user.email ?? "",
+    }) ?? 0;
 
     const createGame = useMutation(api.games.createGame);
 
@@ -87,11 +90,8 @@ export default function PlayroomClient({
                     <CardNumber number={total} title="Partidas Totales" />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 4 }}>
-
-
-
-                    <Card withBorder p="lg" radius="md" shadow="sm">
-                        {lastGame ? (
+                    {lastGame ? (
+                        <Card withBorder p="lg" radius="md" shadow="sm">
                             <Group justify="space-between" mb="md">
                                 <Title order={3} size="h2" tt="uppercase">
                                     {lastGame.roomCode}
@@ -100,17 +100,15 @@ export default function PlayroomClient({
                                     {lastGame.status === 'finished' ? 'FINALIZADO' : 'EN CURSO'}
                                 </Badge>
                             </Group>
-                        ) : (
-                            <Text c="dimmed" size="sm">No hay partidas recientes</Text>
-                        )}
-
-                        <Text c="dimmed" size="sm">
-                            Último Partido
-                        </Text>
-                    </Card>
-
-
-
+                            <Text c="dimmed" size="sm">
+                                Último Partido vs {lastGame.playerOName}
+                            </Text>
+                        </Card>
+                    ) : (
+                        <Title order={3} size="h2" tt="uppercase">
+                            Juega tu primera partida!
+                        </Title>
+                    )}
                 </Grid.Col>
             </Grid>
 
@@ -137,8 +135,8 @@ export default function PlayroomClient({
                 gutter="xs"
                 mb="md"
             >
-                <Grid.Col span={{ base: 12, md: 6 }}>
-                    <Ranking />
+                <Grid.Col span={{ base: 12, md: 7 }}>
+                    <Ranking limit={3} />
                     <Group justify="flex-end">
                         <Button
                             radius="xl"
@@ -149,7 +147,7 @@ export default function PlayroomClient({
                         </Button>
                     </Group>
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6 }}>
+                <Grid.Col span={{ base: 12, md: 5 }}>
                     <Card
                         withBorder
                         p="lg"
@@ -165,20 +163,20 @@ export default function PlayroomClient({
                             borderColor: "rgba(255, 20, 147, 0.15)"
                         }}
                     >
-                        <Title order={4} size="h5" tt="uppercase" mb="xs">Daily Challenge</Title>
-                        <Text c="dimmed" mb="xs">Win 3 matches in a row using only the middle cell as your first move</Text>
+                        <Title order={4} size="h5" tt="uppercase" mb="xs">Desafio del día</Title>
+                        <Text c="dimmed" mb="xs">Juega 3 partidas hoy para completar tu objetivo diario</Text>
                         <Progress
                             mb="xs"
-                            value={((userStats?.dailyChallengeProgress || 0) / 3) * 100}
-                            color={(userStats?.dailyChallengeProgress || 0) >= 3 ? "teal" : "grape"}
-                            animated={(userStats?.dailyChallengeProgress || 0) > 0 && (userStats?.dailyChallengeProgress || 0) < 3}
+                            value={(dailyMatches / 3) * 100}
+                            color={dailyMatches >= 3 ? "teal" : "grape"}
+                            animated={dailyMatches > 0 && dailyMatches < 3}
                         />
                         <Group justify="space-between">
                             <Text fw={900} size="sm" c="gray" tt="uppercase">
-                                {userStats?.dailyChallengeProgress || 0}/3 Completed
+                                {dailyMatches}/3 Completadas
                             </Text>
                             <Text fw={900} size="sm" c="grape">
-                                {Math.round(((userStats?.dailyChallengeProgress || 0) / 3) * 100)}%
+                                {Math.min(100, Math.round((dailyMatches / 3) * 100))}%
                             </Text>
                         </Group>
                     </Card>

@@ -149,36 +149,17 @@ export const makeMove = mutation({
 
             await ctx.db.patch(game._id, patchData);
 
-            // Helper to get challenge progress
-            const updateChallenge = (currentProgress: number | undefined, lastUpdate: number | undefined, won: boolean, firstMove: number | undefined) => {
-                const now = Date.now();
-                const isSameDay = lastUpdate && new Date(lastUpdate).toDateString() === new Date(now).toDateString();
-
-                let progress = isSameDay ? (currentProgress || 0) : 0;
-
-                if (won && firstMove === 4) {
-                    progress += 1;
-                } else {
-                    progress = 0; // Streak broken
-                }
-
-                return { progress: Math.min(progress, 3), now };
-            };
-
             // Update stats for playerX
             const userX = await ctx.db
                 .query("users")
                 .withIndex("by_token", (q) => q.eq("tokenIdentifier", game.playerX))
                 .unique();
             if (userX) {
-                const challenge = updateChallenge(userX.dailyChallengeProgress, userX.lastChallengeUpdate, result === "X", patchData.playerXFirstMove ?? game.playerXFirstMove);
                 await ctx.db.patch(userX._id, {
                     totalGames: userX.totalGames + 1,
                     wins: userX.wins + (result === "X" ? 1 : 0),
                     losses: userX.losses + (result === "O" ? 1 : 0),
                     draws: userX.draws + (result === "draw" ? 1 : 0),
-                    dailyChallengeProgress: challenge.progress,
-                    lastChallengeUpdate: challenge.now,
                 });
             }
 
@@ -190,14 +171,11 @@ export const makeMove = mutation({
                     .unique();
 
                 if (userO) {
-                    const challenge = updateChallenge(userO.dailyChallengeProgress, userO.lastChallengeUpdate, result === "O", patchData.playerOFirstMove ?? game.playerOFirstMove);
                     await ctx.db.patch(userO._id, {
                         totalGames: userO.totalGames + 1,
                         wins: userO.wins + (result === "O" ? 1 : 0),
                         losses: userO.losses + (result === "X" ? 1 : 0),
                         draws: userO.draws + (result === "draw" ? 1 : 0),
-                        dailyChallengeProgress: challenge.progress,
-                        lastChallengeUpdate: challenge.now,
                     });
                 }
             }
@@ -252,5 +230,27 @@ export const getLastGame = query({
 
         const allGames = [...gamesX, ...gamesO].sort((a, b) => b._creationTime - a._creationTime);
         return allGames[0] || null;
+    },
+});
+
+export const getDailyMatchesCount = query({
+    args: { userId: v.string() },
+    handler: async (ctx, args) => {
+        const now = new Date();
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+
+        const gamesX = await ctx.db
+            .query("games")
+            .withIndex("by_playerX", (q) => q.eq("playerX", args.userId))
+            .filter((q) => q.gt(q.field("finishedAt"), startOfDay))
+            .collect();
+
+        const gamesO = await ctx.db
+            .query("games")
+            .withIndex("by_playerO", (q) => q.eq("playerO", args.userId))
+            .filter((q) => q.gt(q.field("finishedAt"), startOfDay))
+            .collect();
+
+        return gamesX.length + gamesO.length;
     },
 });

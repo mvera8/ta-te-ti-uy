@@ -1,18 +1,22 @@
 "use client";
 
-import { Container, Title, Stack, Avatar, Text, Card, Group, SimpleGrid, Button, Loader } from "@mantine/core";
+import { Container, Title, Stack, Avatar, Text, Card, SimpleGrid, Button, Loader, ActionIcon } from "@mantine/core";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { IconChevronLeft } from "@tabler/icons-react";
+import CardNumber from "@/components/CardNumber";
 
 export default function ProfilePage() {
+    const router = useRouter();
     const { data: session, status } = useSession();
     const userStats = useQuery(api.users.getUserStats, session?.user?.email ? { tokenIdentifier: session.user.email } : "skip");
 
     if (status === "loading" || (session && userStats === undefined)) {
         return (
-            <Container mt={100} align="center">
+            <Container>
                 <Loader size="xl" />
             </Container>
         );
@@ -20,9 +24,17 @@ export default function ProfilePage() {
 
     if (!session) {
         return (
-            <Container mt={100} align="center">
-                <Title>No has iniciado sesión</Title>
-                <Button mt="md" component={Link} href="/playroom">Volver</Button>
+            <Container size="xs" w="100%" my="xl">
+                <Card withBorder p="xl" radius="md" shadow="sm" mb="md">
+                    <Stack gap="xl" align="center">
+                        <Title order={1} ta="center">No has iniciado sesión</Title>
+                        <Stack gap="sm">
+                            <Link href="/playroom">
+                                <Button mt="md">Volver</Button>
+                            </Link>
+                        </Stack>
+                    </Stack>
+                </Card>
             </Container>
         );
     }
@@ -31,42 +43,33 @@ export default function ProfilePage() {
 
     return (
         <Container size="sm" mt="xl">
-            <Stack align="center" gap="xl">
-                <Avatar src={session.user?.image} size={120} radius={100} />
+            <Card
+                radius="md"
+                p="lg"
+                withBorder
+                ta="center"
+                mb="md"
+            >
+                <ActionIcon
+                    variant="default"
+                    size="lg"
+                    radius="xl"
+                    aria-label="Back"
+                    onClick={() => router.back()}
+                >
+                    <IconChevronLeft style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                </ActionIcon>
+                <Avatar src={session.user?.image} size={120} radius={100} mx="auto" mb="md" />
                 <Title>{session.user?.name}</Title>
                 <Text c="dimmed">{session.user?.email}</Text>
+            </Card>
 
-                <SimpleGrid cols={2} w="100%">
-                    <Card withBorder radius="md" padding="md">
-                        <Stack align="center" gap={0}>
-                            <Text size="xs" tt="uppercase" fw={700} c="dimmed">Victorias</Text>
-                            <Text size="xl" fw={700} c="green">{stats.wins}</Text>
-                        </Stack>
-                    </Card>
-                    <Card withBorder radius="md" padding="md">
-                        <Stack align="center" gap={0}>
-                            <Text size="xs" tt="uppercase" fw={700} c="dimmed">Derrotas</Text>
-                            <Text size="xl" fw={700} c="red">{stats.losses}</Text>
-                        </Stack>
-                    </Card>
-                    <Card withBorder radius="md" padding="md">
-                        <Stack align="center" gap={0}>
-                            <Text size="xs" tt="uppercase" fw={700} c="dimmed">Empates</Text>
-                            <Text size="xl" fw={700} c="gray">{stats.draws}</Text>
-                        </Stack>
-                    </Card>
-                    <Card withBorder radius="md" padding="md">
-                        <Stack align="center" gap={0}>
-                            <Text size="xs" tt="uppercase" fw={700} c="dimmed">Total Jugadas</Text>
-                            <Text size="xl" fw={700} c="blue">{stats.totalGames}</Text>
-                        </Stack>
-                    </Card>
-                </SimpleGrid>
-
-                <Button fullWidth size="lg" component={Link} href="/playroom">
-                    Ir a jugar 🎮
-                </Button>
-            </Stack>
+            <SimpleGrid cols={{ base: 2, lg: 4 }} w="100%" mb="md">
+                <CardNumber number={stats.wins} title="Victorias" />
+                <CardNumber number={stats.losses} title="Derrotas" />
+                <CardNumber number={stats.draws} title="Empates" />
+                <CardNumber number={stats.totalGames} title="Total Jugadas" />
+            </SimpleGrid>
         </Container>
     );
 }
