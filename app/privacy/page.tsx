@@ -1,4 +1,4 @@
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 export default function PrivacyPage() {
     return (

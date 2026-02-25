@@ -1,15 +1,15 @@
 "use client";
 
-import { Button, Container, Title, Text, Avatar, Stack, Card, SimpleGrid, Group, Grid, Progress, Badge, Center, Box, ThemeIcon } from "@mantine/core";
+import { Button, Title, Text, Card, Group, Grid, Progress, Badge, Box } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import CardNumber from "@/components/CardNumber";
-import { IconBolt, IconCircleArrowUpFilled } from "@tabler/icons-react";
+import { IconBolt } from "@tabler/icons-react";
 import { Ranking } from "@/components/Ranking";
 import Ads from "@/components/Ads";
 import { useMediaQuery } from "@mantine/hooks";
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 function generateRoomCode() {
     return Math.random().toString(36).substring(2, 7).toUpperCase();

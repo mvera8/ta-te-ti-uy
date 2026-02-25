@@ -6,7 +6,7 @@ import { useQuery, useConvexConnectionState } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import StatusBadge from "@/components/StatusBadge";
 import { useNetwork } from "@mantine/hooks";
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 type Status = "loading" | "online" | "offline";
 

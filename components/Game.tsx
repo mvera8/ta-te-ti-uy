@@ -24,7 +24,7 @@ import { useDocumentTitle, useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import ConfettiExplosion from "react-confetti-explosion";
 import Link from "next/link";
-import { SiteSection } from "./SIteSection";
+import { SiteSection } from "./SiteSection";
 
 export default function Game({ roomCode }: { roomCode: string }) {
     const router = useRouter();
@@ -82,7 +82,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
                 ),
             });
         }
-    }, [game?.status, game?.playerO]);
+    }, [game, userId, session, joinGame, roomCode]);
 
     /* =============================
        Notificación: Jugador Unido
@@ -98,26 +98,32 @@ export default function Game({ roomCode }: { roomCode: string }) {
                 ),
             });
         }
-    }, [game?.playerO, game?.status]);
+    }, [game, userId]);
 
     /* =============================
        Confetti
     ============================== */
     useEffect(() => {
+        let timer: NodeJS.Timeout;
         if (game?.status === "finished" && game.winner && game.winner !== "draw") {
             const isWinner =
                 (game.winner === "X" && game.playerX === userId) ||
                 (game.winner === "O" && game.playerO === userId);
 
-            if (isWinner) setIsExploding(true);
+            if (isWinner) {
+                timer = setTimeout(() => setIsExploding(true), 0);
+            }
         }
-    }, [game?.status, game?.winner]);
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [game, userId]);
 
     useEffect(() => {
         if (game?.status === "finished") {
             openGameOver();
         }
-    }, [game?.status]);
+    }, [game, openGameOver]);
 
     const mySymbol =
         game?.playerX === userId
@@ -178,7 +184,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
         sileo.success({
             title: "Mensaje copiado",
             description: (
-                <Text c="dimmed">Pegalo en WhatsApp y a jugar 😎</Text>
+                <Text c="dimmed">Compartilo en WhatsApp y a jugar 😎</Text>
             ),
         });
     };

@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { Card, Button, Text, Stack, Anchor } from "@mantine/core";
 import { IconBrandGithub, IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import Link from "next/link";
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 export default function LoginPage() {
     return (

@@ -2,14 +2,14 @@
 
 import ExampleBoard from "@/components/ExampleBoard";
 import SiteBadge from "@/components/SiteBadge";
-import { Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification, Group } from "@mantine/core"
+import { Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification } from "@mantine/core"
 import { IconBrain, IconChevronRight, IconMedal2, IconRocket, IconShare3, IconWorld } from "@tabler/icons-react";
 import Link from "next/link"
 import { useWindowScroll, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import classes from './Homepage.module.css';
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 const cards = [
   {
@@ -43,9 +43,12 @@ export default function Home() {
     : true;
 
   useEffect(() => {
-    setMounted(true);
+    const mountTimer = setTimeout(() => setMounted(true), 0);
     const timer = setTimeout(() => setShowNotifications(true), 800);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(mountTimer);
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
@@ -188,7 +191,7 @@ export default function Home() {
       </Box>
 
       <SiteSection>
-        <Title order={2} size="h1" ta="center" mb="xl">Dominá el juego</Title>
+        <Title order={2} size="h1" ta="center" mb="xl">Dominá el juego <Text inherit span c="grape">con estrategia</Text></Title>
         <SimpleGrid cols={{ base: 1, md: 2 }}>
           {cards.map((card, index) => (
             <Card key={index} p="md" radius="md" bg="none">

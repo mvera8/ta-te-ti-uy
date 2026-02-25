@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Button, Container, Group, Text, Burger, Drawer, Stack, Box, Divider } from "@mantine/core"
+import { ActionIcon, Avatar, Button, Container, Group, Text, Burger, Drawer, Stack, Divider } from "@mantine/core"
 import { useSession, signOut } from "next-auth/react"
 import { useDisclosure } from "@mantine/hooks"
 import Demo from "./Demo"
