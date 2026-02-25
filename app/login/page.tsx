@@ -10,27 +10,6 @@ import { useMediaQuery } from "@mantine/hooks";
 export default function LoginPage() {
     const isDesktop = useMediaQuery('(min-width: 64em)');
 
-    const handleFacebookSignIn = () => {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        if (isMobile) {
-            // Intenta abrir la app nativa
-            // Facebook usa su propio deep link para OAuth
-            const callbackUrl = encodeURIComponent(`${window.location.origin}/playroom`);
-
-            // Construye la URL del deep link de Facebook para login
-            // Esto abre la app de Facebook para autenticación
-            window.location.href = `fb://authorize`;
-
-            // Fallback: si no abre la app en 2s, usa el flujo normal
-            setTimeout(() => {
-                signIn("facebook", { callbackUrl: "/playroom" });
-            }, 2000);
-        } else {
-            signIn("facebook", { callbackUrl: "/playroom" });
-        }
-    };
-
     return (
         <SiteSection
             size="xs"
@@ -45,7 +24,7 @@ export default function LoginPage() {
                             size={isDesktop ? "md" : "lg"}
                             radius="xl"
                             leftSection={<IconBrandFacebook size={20} />}
-                            onClick={handleFacebookSignIn}
+                            onClick={() => signIn("facebook", { callbackUrl: "/playroom" })}
                         >
                             Continuar con Facebook
                         </Button>
