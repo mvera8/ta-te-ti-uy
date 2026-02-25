@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import CardNumber from "@/components/CardNumber";
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 export default function ProfilePage() {
     const router = useRouter();

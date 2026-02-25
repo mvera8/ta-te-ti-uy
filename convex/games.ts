@@ -130,7 +130,15 @@ export const makeMove = mutation({
         newBoard[args.position] = playerSymbol;
 
         // Record first move if not already recorded
-        const patchData: any = {
+        const patchData: {
+            board: ("X" | "O" | null)[];
+            playerXFirstMove?: number;
+            playerOFirstMove?: number;
+            status?: "waiting" | "playing" | "finished";
+            winner?: "X" | "O" | "draw";
+            finishedAt?: number;
+            currentTurn?: "X" | "O";
+        } = {
             board: newBoard,
         };
 
@@ -204,7 +212,7 @@ export const getUnfinishedGames = query({
 
         const gamesO = await ctx.db
             .query("games")
-            .withIndex("by_playerO", (q) => q.eq("playerO", args.userId as any))
+            .withIndex("by_playerO", (q) => q.eq("playerO", args.userId))
             .filter((q) => q.neq(q.field("status"), "finished"))
             .collect();
 

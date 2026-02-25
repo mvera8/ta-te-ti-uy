@@ -1,4 +1,4 @@
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 import { Text } from "@mantine/core";
 
 export default function HowToPlayPage() {

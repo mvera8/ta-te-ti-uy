@@ -7,7 +7,7 @@ export const SiteSection = ({ children, title, description, size = "lg" }: { tit
                 size={size}
                 pb="xl"
                 py={{
-                    base: 0,
+                    base: "xs",
                     md: "xl"
                 }}
                 style={{ position: "relative" }}

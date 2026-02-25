@@ -5,6 +5,8 @@ MVP:
 - favicon
 - mobile
 -- share en twitter & share en instagram
+- delete rooms?
+- table responsive
 
 PROD:
 - Ads

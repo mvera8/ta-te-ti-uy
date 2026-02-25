@@ -1,5 +1,5 @@
 import { Ranking } from "@/components/Ranking";
-import { SiteSection } from "@/components/SIteSection";
+import { SiteSection } from "@/components/SiteSection";
 
 export default function RankingPage() {
     return (
