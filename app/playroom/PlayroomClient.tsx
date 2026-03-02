@@ -83,7 +83,7 @@ export default function PlayroomClient({
                 mb="md"
             >
                 <Grid.Col span={{ base: 6, md: 4 }}>
-                    <CardNumber prefix="#" number={userRanking ?? '--'} title="Ranking Global" />
+                    <CardNumber prefix="#" number={userRanking ?? '--'} title="Mi Ranking" />
                 </Grid.Col>
                 <Grid.Col span={{ base: 6, md: 4 }}>
                     <CardNumber number={total} title="Partidas Totales" />

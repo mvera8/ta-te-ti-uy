@@ -67,6 +67,7 @@ export const metadata: Metadata = {
   },
   icons: {
     apple: [
+      { url: '/icons/apple-icon.png' },
       { url: '/icons/apple-touch-icon-180x180.png', sizes: '180x180' },
       { url: '/icons/apple-touch-icon-152x152.png', sizes: '152x152' },
       { url: '/icons/apple-touch-icon-120x120.png', sizes: '120x120' },
@@ -83,8 +84,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
-
-
       </head>
       <body>
         <Providers>{children}</Providers>
