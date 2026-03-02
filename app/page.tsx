@@ -2,27 +2,34 @@
 
 import ExampleBoard from "@/components/ExampleBoard";
 import SiteBadge from "@/components/SiteBadge";
-import { Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification } from "@mantine/core"
-import { IconBrain, IconChevronRight, IconMedal2, IconRocket, IconShare3, IconWorld } from "@tabler/icons-react";
+import { Title, Button, Text, Card, Flex, SimpleGrid, Grid, Center, Box, ThemeIcon, Transition, Avatar, Notification, Accordion, Stack, Container } from "@mantine/core"
+import { IconBrain, IconBrandInstagram, IconChevronRight, IconLoader3, IconMedal2, IconPlus, IconRocket, IconShare3, IconWorld } from "@tabler/icons-react";
 import Link from "next/link"
 import { useWindowScroll, useMediaQuery } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import classes from './Homepage.module.css';
 import { SiteSection } from "@/components/SiteSection";
+import Ads from "@/components/Ads";
 
 const cards = [
   {
-    title: "Juega en Tiempo Real",
+    title: "Juega en tiempo real",
     description: "Enfrentate con amigos o jugadores de todo el país en partidas rápidas y dinámicas.",
     icon: <IconWorld size={35} stroke={1.5} />,
     color: "cyan",
   },
   {
-    title: "Competí por el primer puesto",
+    title: "Competí por ser el mejor",
     description: "Sumá puntos, subí en el ranking y demostrá que sos el mejor jugador de Ta-Te-Ti del Uruguay.",
     icon: <IconMedal2 size={35} stroke={1.5} />,
     color: "grape",
+  },
+  {
+    title: "Totalmente gratis",
+    description: "No hay nada que pagar, todo es gratuito, solo monetizamos con la publicidad.",
+    icon: <IconLoader3 size={35} stroke={1.5} />,
+    color: "pink",
   },
   // {
   //   title: "Personalizá tu experiencia",
@@ -30,7 +37,18 @@ const cards = [
   //   icon: <IconPalette size={35} stroke={1.5} />,
   //   color: "pink",
   // },
-]
+];
+
+const faqs = [
+  {
+    title: "¿Cómo funciona?",
+    description: "Juega en tiempo real con tus amigos o jugadores de todo el país.",
+  },
+  {
+    title: "¿Hay que pagar algo?",
+    description: "No, todo es gratuito, solo monetizamos con la publicidad.",
+  },
+];
 
 export default function Home() {
   const [scroll] = useWindowScroll();
@@ -84,7 +102,7 @@ export default function Home() {
               </Title>
 
               <Text size="lg" mb="lg" c="dimmed">
-                Juega al <Text span fw="bold">Ta-Te-Ti online</Text> con amigos. Compite con los mejores, sube en las clasificaciones y demuestra que eres el mejor.
+                Juega gratis al <Text span fw="bold">Ta-Te-Ti online</Text> con amigos. Compite con los mejores, sube en las clasificaciones y demuestra que eres el mejor.
               </Text>
 
               <Flex
@@ -132,9 +150,7 @@ export default function Home() {
                 >
                   {(transitionStyles) => (
                     <Box className={classes.animatedBox} style={transitionStyles}>
-
                       {isDesktop && <>
-
                         <Transition mounted={showNotifications} transition="pop" duration={500}>
                           {(styles) => (
                             <Notification
@@ -148,7 +164,7 @@ export default function Home() {
                                 ...styles,
                               }}
                             >
-                              Reta a tus amigos
+                              Te compartieron el link de un reto
                             </Notification>
                           )}
                         </Transition>
@@ -158,7 +174,7 @@ export default function Home() {
                             <Notification
                               icon={<IconBrain size={20} />}
                               color="grape"
-                              title="Hora de jugar!"
+                              title="Tenes tu estrategia?"
                               withCloseButton={false}
                               radius="xl"
                               className={classes.animatedNotification2}
@@ -170,7 +186,7 @@ export default function Home() {
                                 zIndex: 1,
                               }}
                             >
-                              Piensa tu estrategia
+                              Reta a tus amigos en un duelo
                             </Notification>
                           )}
                         </Transition>
@@ -191,8 +207,9 @@ export default function Home() {
       </Box>
 
       <SiteSection>
+        <Ads />
         <Title order={2} size="h1" ta="center" mb="xl">Dominá el juego <Text inherit span c="grape">con estrategia</Text></Title>
-        <SimpleGrid cols={{ base: 1, md: 2 }}>
+        <SimpleGrid cols={{ base: 1, md: 3 }}>
           {cards.map((card, index) => (
             <Card key={index} p="md" radius="md" bg="none">
               <ThemeIcon variant="light" size="xl" color={card.color} mb="md">
@@ -231,13 +248,26 @@ export default function Home() {
             <Title order={5} mb="xl">
               Únete a la comunidad y demostrá que sos el mejor jugador!
             </Title>
-            <Center>
+            <Center mb="lg">
               <Avatar.Group>
                 <Avatar src="image.webp" size="xl" />
                 <Avatar src="image.webp" size="xl" />
                 <Avatar size="xl" variant="light" color="grape">+99</Avatar>
               </Avatar.Group>
             </Center>
+
+            <Stack gap="md">
+              <Button
+                component="a"
+                href="https://www.instagram.com/tateiti.uy"
+                target="_blank"
+                radius="xl"
+                size="lg"
+                variant="gradient"
+                gradient={{ from: 'red', to: 'yellow', deg: 90 }}
+                leftSection={<IconBrandInstagram size={20} />}
+              >Siguenos en Instagram</Button>
+            </Stack>
           </Card>
 
           <Card
@@ -268,6 +298,31 @@ export default function Home() {
         </SimpleGrid>
       </SiteSection>
 
+      <SiteSection size="sm">
+        <Title order={2} size="h1" ta="center" mb="xl">Preguntas <Text inherit span c="grape">frecuentes</Text></Title>
+
+        <Accordion
+          chevronPosition="right"
+          defaultValue="reset-password"
+          chevronSize={26}
+          variant="separated"
+          disableChevronRotation
+          styles={{ label: { color: 'var(--mantine-color-black)' }, item: { border: 0 } }}
+          chevron={
+            <ThemeIcon variant="light" color="cyan" radius="xl" size={26}>
+              <IconPlus size={18} stroke={1.5} />
+            </ThemeIcon>
+          }
+        >
+          {faqs.map((faq, index) => (
+            <Accordion.Item key={index} value={index.toString()}>
+              <Accordion.Control>{faq.title}</Accordion.Control>
+              <Accordion.Panel>{faq.description}</Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </SiteSection>
+
       <SiteSection>
         <Card
           withBorder
@@ -276,25 +331,29 @@ export default function Home() {
           shadow="sm"
           bg="var(--mantine-color-grape-5)"
         >
-          <Title order={2} size="h1" ta="center" mb="xs" c="white" tt="uppercase">
-            Master the Ultimate Grid.
-          </Title>
-          <Text size="lg" ta="center" mb="xl" c="white">
-            Create your account in seconds and claim your unique username before someone else does.
-          </Text>
-          <Center>
-            <Link href="/login">
-              <Button
-                radius="xl"
-                variant="white"
-                color="grape"
-                size="xl"
-                leftSection={<IconRocket size={25} />}
-              >
-                Jugar Ahora
-              </Button>
-            </Link>
-          </Center>
+          <Container
+            size="xs"
+          >
+            <Title order={2} size="h1" ta="center" mb="xs" c="white" tt="uppercase">
+              Domina el juego definitivo
+            </Title>
+            <Text size="lg" ta="center" mb="xl" c="white">
+              Crea tu cuenta en segundos y reclama tu nombre de usuario único antes de que lo haga otra persona.
+            </Text>
+            <Center>
+              <Link href="/login">
+                <Button
+                  radius="xl"
+                  variant="white"
+                  color="grape"
+                  size="xl"
+                  leftSection={<IconRocket size={25} />}
+                >
+                  Jugar Ahora
+                </Button>
+              </Link>
+            </Center>
+          </Container>
         </Card>
       </SiteSection>
     </>

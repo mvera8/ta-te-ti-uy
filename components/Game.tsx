@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     Loader,
     Text,
@@ -34,6 +34,10 @@ export default function Game({ roomCode }: { roomCode: string }) {
     const [isExploding, setIsExploding] = useState(false);
     const [gameOverOpened, { open: openGameOver, close: closeGameOver }] = useDisclosure(false);
 
+    // Refs to prevent duplicate notifications
+    const hasJoinedNotified = useRef(false);
+    const hasOpponentNotified = useRef(false);
+
     const game = useQuery(
         api.games.getGameByRoom,
         roomCode ? { roomCode } : "skip"
@@ -59,7 +63,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
        Join automático
     ============================== */
     useEffect(() => {
-        if (!userId || !game) return;
+        if (!userId || !game || hasJoinedNotified.current) return;
 
         if (
             game.status === "waiting" &&
@@ -73,6 +77,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
                 userImage: session?.user?.image || undefined,
             });
 
+            hasJoinedNotified.current = true;
             sileo.success({
                 title: "¡Te has unido!",
                 description: (
@@ -88,7 +93,8 @@ export default function Game({ roomCode }: { roomCode: string }) {
        Notificación: Jugador Unido
     ============================== */
     useEffect(() => {
-        if (game?.playerO && game.playerX === userId && game.status === "playing") {
+        if (game?.playerO && game.playerX === userId && game.status === "playing" && !hasOpponentNotified.current) {
+            hasOpponentNotified.current = true;
             sileo.info({
                 title: "¡Oponente unido!",
                 description: (
