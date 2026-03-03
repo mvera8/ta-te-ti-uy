@@ -12,6 +12,7 @@ import {
     Box,
     Grid,
     Modal,
+    Center,
 } from "@mantine/core";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -45,6 +46,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
 
     const joinGame = useMutation(api.games.joinGame);
     const makeMove = useMutation(api.games.makeMove);
+    const incrementViews = useMutation(api.games.incrementViews);
 
     const xColor = "grape";
     const oColor = "cyan";
@@ -88,6 +90,17 @@ export default function Game({ roomCode }: { roomCode: string }) {
             });
         }
     }, [game, userId, session, joinGame, roomCode]);
+
+    /* =============================
+       Contador de Visitas
+    ============================== */
+    useEffect(() => {
+        const hasVisited = sessionStorage.getItem(`visited_${roomCode}`);
+        if (!hasVisited && roomCode) {
+            incrementViews({ roomCode });
+            sessionStorage.setItem(`visited_${roomCode}`, "true");
+        }
+    }, [roomCode, incrementViews]);
 
     /* =============================
        Notificación: Jugador Unido
@@ -155,7 +168,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
 
     useDocumentTitle(turnText);
 
-    if (status === "loading" || !userId || !game) return <Loader />;
+    if (status === "loading" || !userId || !game) return <Center py="xl"><Loader /></Center>;
 
     const xIsMe = game.playerX === userId;
     const oIsMe = game.playerO === userId;
@@ -172,7 +185,7 @@ export default function Game({ roomCode }: { roomCode: string }) {
 
     const handleShareRoom = async () => {
         const roomUrl = `${window.location.origin}/game/${roomCode}`;
-        const message = `🎮 Juguemos Ta Te Ti Uy!\n\nEntrá acá:\n${roomUrl}`;
+        const message = `🎮 Juguemos Ta Te Ti Uy!\n\n${game.playerXName} te retó acá:\n${roomUrl}`;
 
         const isMobile = /Android|iPhone|iPad|iPod/i.test(
             navigator.userAgent
@@ -224,9 +237,14 @@ export default function Game({ roomCode }: { roomCode: string }) {
             <Ads />
 
             <Group justify="space-between" mb="xs">
-                <Text size="xl">
-                    Room: <b>{roomCode}</b>
-                </Text>
+                <Stack gap={0}>
+                    <Text size="xl">
+                        Room: <b>{roomCode}</b>
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                        {game.views || 0} visitas
+                    </Text>
+                </Stack>
 
                 <Button
                     onClick={handleShareRoom}
@@ -282,8 +300,23 @@ export default function Game({ roomCode }: { roomCode: string }) {
                 <Grid.Col
                     span={{ base: 12, md: 6 }}
                     order={{ base: 3, md: 2 }}
-                    style={{ display: "flex", justifyContent: "center" }}
                 >
+                    {/* in game finished */}
+                    {game.status === "finished" && (
+                        <Center mb="md">
+                            <Button
+                                component="a"
+                                href="/playroom"
+                                size="md"
+                                radius="xl"
+                                variant="filled"
+                                color="cyan"
+                            >
+                                Volver al Playroom
+                            </Button>
+                        </Center>
+                    )}
+
                     <Board
                         board={game.board}
                         currentTurn={game.currentTurn}
@@ -355,28 +388,26 @@ export default function Game({ roomCode }: { roomCode: string }) {
                                     ? "¡Felicitaciones! Ganaste 🎉"
                                     : "¡Mucha suerte la próxima! 🏁"}
                         </Text>
-                        <Link href="/playroom" style={{ textDecoration: "none" }}>
-                            <Button
-                                fullWidth
-                                size="md"
-                                radius="xl"
-                                variant="filled"
-                                color="cyan"
-                            >
-                                Volver al Playroom
-                            </Button>
-                        </Link>
+                        <Button
+                            component="a"
+                            href="/playroom"
+                            fullWidth
+                            size="md"
+                            radius="xl"
+                            variant="filled"
+                            color="cyan"
+                        >
+                            Volver al Playroom
+                        </Button>
                         <Button
                             fullWidth
                             size="md"
                             radius="xl"
-                            variant="light"
                             color="grape"
                             onClick={closeGameOver}
                         >
                             Cerrar
                         </Button>
-
                     </Stack>
                 </Stack>
             </Modal>
