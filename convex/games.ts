@@ -38,6 +38,7 @@ export const createGame = mutation({
             currentTurn: "X",
             status: "waiting",
             winner: undefined,
+            views: 0,
             finishedAt: undefined,
         });
     },
@@ -260,5 +261,21 @@ export const getDailyMatchesCount = query({
             .collect();
 
         return gamesX.length + gamesO.length;
+    },
+});
+
+export const incrementViews = mutation({
+    args: { roomCode: v.string() },
+    handler: async (ctx, args) => {
+        const game = await ctx.db
+            .query("games")
+            .withIndex("by_room", (q) => q.eq("roomCode", args.roomCode))
+            .unique();
+
+        if (!game) return;
+
+        await ctx.db.patch(game._id, {
+            views: (game.views || 0) + 1,
+        });
     },
 });

@@ -59,6 +59,8 @@ export default defineSchema({
             )
         ),
 
+        views: v.optional(v.number()),
+
         finishedAt: v.optional(v.number()),
         playerXFirstMove: v.optional(v.number()),
         playerOFirstMove: v.optional(v.number()),

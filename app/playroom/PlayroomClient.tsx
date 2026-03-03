@@ -114,10 +114,11 @@ export default function PlayroomClient({
                         <Button
                             key={game._id}
                             variant="outline"
+                            size="lg"
                             onClick={() => router.push(`/game/${game.roomCode}`)}
                             fullWidth
                         >
-                            Reanudar {game.roomCode} ({new Date(game._creationTime).toLocaleDateString()})
+                            Reanudar {game.roomCode} vs {game.playerOName} ({new Date(game._creationTime).toLocaleDateString()})
                         </Button>
                     ))}
                 </Box>
